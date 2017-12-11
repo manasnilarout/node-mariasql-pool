@@ -1,0 +1,10 @@
+{
+  "name": "mariasql-with-genericpool",
+  "description": "A working example on how to use MariaSQL driver with generic pool in Node.js.",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "4.16.2",
+    "mariasql": "0.2.6",
+    "generic-pool":"3.1.7"
+  }
+}
