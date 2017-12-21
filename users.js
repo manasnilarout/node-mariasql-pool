@@ -37,7 +37,7 @@ Users.prototype.queryWithPool = function (req, res) {
       name: 'Test user'
     }, function (err, rows) {
       if (err) {
-        console.log("Error on query");
+        console.log('Error on query');
         console.log(err);
         res.json({ code: 100, status: 'Error in connecting database' });
       } else {

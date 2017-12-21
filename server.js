@@ -44,6 +44,10 @@ function handleNormalConnection() {
   });
 }
 
+/**
+ * Function that will create connection to MariaDB database by creating pool connenctions.
+ * This is called when server.js is called by passing -p argument and command to run is node server.js -p
+ **/
 function handlePoolConnection() {
   // Creating a pool
   pool = poolModule.createPool({
@@ -68,11 +72,22 @@ function handlePoolConnection() {
         client.end();
         resolve();
       })
+    },
+    validate: function (client) {
+      return new Promise(function (resolve, reject) {
+        if (client) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
     }
   },{
-    max: 100,
-    min: 10, // Connections limit,
-    idleTimeoutMillis: 30000
+    max: 100, // Connections limit
+    min: 10, // Connections to create
+    idleTimeoutMillis: 30000, // Time for pool to sit idle
+    testOnBorrow: true, // Validate the resource before giving to client
+    evictionRunIntervalMillis: 5000 // Run eviction checks
   });
 }
 
@@ -93,7 +108,6 @@ main();
 
 // When an exception occurs release all the pooling connections before starting your server
 process.on('uncaughtException', function (err) {
-  console.log('FIRED');
   pool.drain().then(function() {
       return pool.clear();
   });
