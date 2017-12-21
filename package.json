@@ -1,6 +1,6 @@
 {
-  "name": "mariasql-with-genericpool",
-  "description": "A working example on how to use MariaSQL driver with generic pool in Node.js.",
+  "name": "node-mariasql-pool",
+  "description": "A demo app that demonstrates the benefits of using pooling using node-mariasql in Node.js.",
   "version": "0.0.1",
   "dependencies": {
     "mariasql": "0.2.6",
