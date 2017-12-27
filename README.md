@@ -3,7 +3,6 @@ node-mariasql-pool
 A demo app that demonstrates the benefits of using pooling using node-mariasql in Node.js. Using this app,
 you can depict performance impact on each request that you will make to server using [generic-pool](https://github.com/coopernurse/node-pool).
 # Dependencies
-- python (must be of versioon 2.6 or 2.7)
 - node.js (must be of version>= 8.4.0).
 - npm (must be of version>= 5.3.0).
 
