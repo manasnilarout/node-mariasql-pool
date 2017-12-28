@@ -12,16 +12,53 @@ let app = express();
 let client = new Client();
 let pool = {};
 let isPoolTesting = false;
+let clientObj = {
+  host: '10.0.0.66',
+  user: 'osmosys',
+  password: 'osmlinuxdev@123',
+  db: 'test_db'
+}
 
 // main
 function main() {
-  let args = process.argv;
-  if (args.length > 2 && args[args.length - 1] === '-p') {
-    isPoolTesting = true;
+  let isAgrsPassed = getArgumets();
+  if (!isAgrsPassed) {
+    console.log('Invalid arguments passed.');
+    process.exit(9);
+  }
+  if (isPoolTesting) {
+    console.log(`Creating pool connection with database configuration as ${JSON.stringify(clientObj)}`);
     handlePoolConnection();
   } else {
+    console.log(`Creating normal connection with database configuration as ${JSON.stringify(clientObj)}`);
     handleNormalConnection();
   }
+}
+
+// Process the arguments
+function getArgumets() {
+  let args = process.argv;
+  if (args.length <= 2) {
+    return true;
+  }
+  let processedArgs = {};
+  for (let i = 2; i < args.length; i = i + 2) {
+    if (!args[i] || (!args[i + 1] && args[i] !== '-pool')) {
+      return false;
+    }
+    if (args[i] === '-host') {
+      clientObj.host = args[i + 1];
+    } else if (args[i] === '-usr') {
+      client.user = args[i + 1];
+    } else if (args[i] === '-pwd') {
+      clientObj.password = args[i + 1];
+    } else if (args[i] === '-db') {
+      clientObj.db = args[i + 1];
+    } else if (args[i] === '-pool') {
+      isPoolTesting = true
+    }
+  }
+  return true;
 }
 
 /**
@@ -30,12 +67,7 @@ function main() {
  **/
 function handleNormalConnection() {
   // Connecting to database
-  client.connect({
-    host: '10.0.0.66',
-    user: 'osmosys',
-    password: 'osmlinuxdev@123',
-    db: 'test_db'
-  });
+  client.connect(clientObj);
 
   client.on('error', function (err) {
     console.log('Client error: ' + err);
@@ -53,12 +85,7 @@ function handlePoolConnection() {
   pool = poolModule.createPool({
     create: function (callback) {
       return new Promise(function (resolve, reject) {
-        client.connect({
-          host: '10.0.0.66',
-          user: 'osmosys',
-          password: 'osmlinuxdev@123',
-          db: 'test_db'
-        });
+        client.connect(clientObj);
         client.on('error', function (err) {
           console.log('Client error: ' + err);
           reject(err);
@@ -82,13 +109,13 @@ function handlePoolConnection() {
         }
       });
     }
-  },{
-    max: 100, // Connections limit
-    min: 10, // Connections to create
-    idleTimeoutMillis: 30000, // Time for pool to sit idle
-    testOnBorrow: true, // Validate the resource before giving to client
-    evictionRunIntervalMillis: 5000 // Run eviction checks
-  });
+  }, {
+      max: 100, // Connections limit
+      min: 10, // Connections to create
+      idleTimeoutMillis: 30000, // Time for pool to sit idle
+      testOnBorrow: true, // Validate the resource before giving to client
+      evictionRunIntervalMillis: 5000 // Run eviction checks
+    });
 }
 
 app.get('/users', function (req, res) {
@@ -103,12 +130,13 @@ app.get('/users', function (req, res) {
 
 app.listen(3000);
 console.log('Express is Listening..');
+
 // Running the main function
 main();
 
 // When an exception occurs release all the pooling connections before starting your server
 process.on('uncaughtException', function (err) {
-  pool.drain().then(function() {
-      return pool.clear();
+  pool.drain().then(function () {
+    return pool.clear();
   });
 });
