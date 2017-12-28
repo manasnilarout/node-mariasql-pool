@@ -119,12 +119,12 @@ function handlePoolConnection() {
 }
 
 app.get('/users', function (req, res) {
-  let usersObj = new Users(client, pool);
+  let objUser = new Users(client, pool);
   // Executing the query with and without pool
   if (isPoolTesting) {
-    usersObj.queryWithPool(req, res);
+    objUser.queryWithPool(req, res);
   } else {
-    usersObj.queryWithoutPool(req, res);
+    objUser.queryWithoutPool(req, res);
   }
 });
 
