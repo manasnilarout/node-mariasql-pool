@@ -28,14 +28,16 @@ npm install
 ## Run the server
 ```
 # To run the server that will create database connections without pooling
-node server.js # Use default database configuration
-
-node server.js -host HOST_NAME -user USER_NAME -pwd PASSWORD -db DATAABASE # Use arguments as database configuration
+## Use default database configuration
+node server.js 
+## Use arguments as database configuration
+node server.js -host HOST_NAME -user USER_NAME -pwd PASSWORD -db DATAABASE 
 
 # To run the server that will create database connections with pooling using generic-pool
-node server.js -pool # Use default database configuration
-
-node server.js -host HOST_NAME -user USER_NAME -pwd PASSWORD -db DATAABASE -pool # Use arguments as database configuration
+## Use default database configuration
+node server.js -pool
+## Use arguments as database configuration
+node server.js -host HOST_NAME -user USER_NAME -pwd PASSWORD -db DATAABASE -pool 
 ```
 # Make a request
 
