@@ -16,7 +16,7 @@ you can depict performance impact on each request that you will make to server u
 
 We use the MariaDB server.
 
-1. Set the variables which are there in maria-sql client object in `server.js` file to point to your database.
+1. Set the variables which are there in maria-sql client object in `server.js` file to point to your database or override them by passing database configurations as arguments.
 2. Run the queries in `sql/testdb.sql` file to restore the database that is needed to test this example.
 
 ## Installing dependencies
@@ -28,14 +28,16 @@ npm install
 ## Run the server
 ```
 # To run the server that will create database connections without pooling
-node server.js # Use default database configuration
-
-node server.js -host HOST_NAME -user USER_NAME -pwd PASSWORD -db DATAABASE # Use arguments as database configuration
+## Use default database configuration
+node server.js 
+## Use arguments as database configuration
+node server.js -host HOST_NAME -user USER_NAME -pwd PASSWORD -db DATAABASE 
 
 # To run the server that will create database connections with pooling using generic-pool
-node server.js -pool # Use default database configuration
-
-node server.js -host HOST_NAME -user USER_NAME -pwd PASSWORD -db DATAABASE -pool # Use arguments as database configuration
+## Use default database configuration
+node server.js -pool
+## Use arguments as database configuration
+node server.js -host HOST_NAME -user USER_NAME -pwd PASSWORD -db DATAABASE -pool 
 ```
 # Make a request
 
