@@ -16,7 +16,7 @@ you can depict performance impact on each request that you will make to server u
 
 We use the MariaDB server.
 
-1. Set the variables which are there in maria-sql client object in `server.js` file to point to your database.
+1. Set the variables which are there in maria-sql client object in `server.js` file to point to your database or override them by passing database configurations as arguments.
 2. Run the queries in `sql/testdb.sql` file to restore the database that is needed to test this example.
 
 ## Installing dependencies
